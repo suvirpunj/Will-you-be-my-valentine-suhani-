@@ -1,1 +1,198 @@
-# Will-you-be-my-valentine-suhani-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? 💝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  font-family:'Poppins',Arial,sans-serif;
+  overflow:hidden;
+}
+body{
+  background:linear-gradient(135deg,#ffafbd,#ffc3a0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  width:360px;
+  background:#fff5f7;
+  border-radius:28px;
+  padding:24px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.photo{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:20px;
+  margin-bottom:14px;
+}
+
+h1{ color:#ff4757; margin:8px 0 }
+p{ color:#7a1f2b; font-size:17px }
+
+button{
+  margin-top:14px;
+  padding:14px 36px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  background:#ff6b6b;
+  color:white;
+  cursor:pointer;
+}
+button:hover{ background:#ff8787 }
+
+#no{ position:absolute }
+
+.meter{
+  font-size:28px;
+  color:#ff4757;
+  margin:10px 0;
+}
+
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:22px;
+  animation:float 15s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="music" loop>
+  <source src="Heeriye (Official Video) Jasleen Royal ft Arijit Singh Dulquer Salmaan Aditya Sharma Taani Tanvir.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="card">
+  <img src="IMG_4022.jpeg" class="photo">
+
+  <h1>❤️ Suhani ❤️</h1>
+  <p id="question">Do you like me?</p>
+
+  <div id="content"></div>
+
+  <button onclick="yes()">Yes</button>
+  <button id="no" onmouseover="moveNo()">No</button>
+</div>
+
+<script>
+let step = 1;
+let love = 0;
+
+/* 🎵 AUTOPLAY MUSIC ON LOAD (with fallback) */
+window.addEventListener("load", () => {
+  const music = document.getElementById("music");
+  music.volume = 0.5;
+
+  const playAttempt = music.play();
+  if (playAttempt !== undefined) {
+    playAttempt.catch(() => {
+      document.body.addEventListener("click", startMusicOnce, { once: true });
+      document.body.addEventListener("touchstart", startMusicOnce, { once: true });
+    });
+  }
+});
+
+function startMusicOnce(){
+  const music = document.getElementById("music");
+  music.volume = 0.5;
+  music.play();
+}
+
+function yes(){
+  startMusicOnce(); // ensure music starts
+
+  if(step === 1){
+    document.getElementById("question").innerHTML =
+      "I don't like you, I love you! ❤️";
+    document.getElementById("content").innerHTML =
+      "<button onclick='nextStep()'>Next ❤️</button>";
+    document.getElementById("no").style.display = "none";
+  }
+}
+
+function nextStep(){
+  step = 2;
+  document.getElementById("question").innerHTML =
+    "How much do you love me?";
+  document.getElementById("content").innerHTML = `
+    <div class="meter" id="meter">0%</div>
+    <button onclick="increase()">This much!</button>
+    <button onclick="finalStep()">Next ❤️</button>
+  `;
+}
+
+function increase(){
+  love += Math.floor(Math.random()*500) + 100;
+  const meter = document.getElementById("meter");
+
+  if(love > 5000){
+    meter.innerHTML = "WOOOOW You love me that much?? 🥰🚀💝";
+  }else if(love > 1000){
+    meter.innerHTML = "To infinity and beyond! 🚀💝";
+  }else{
+    meter.innerHTML = love + "%";
+  }
+}
+
+function finalStep(){
+  step = 3;
+  document.getElementById("question").innerHTML =
+    "Will you be my Valentine...? 💝";
+  document.getElementById("content").innerHTML = `
+    <button onclick="celebrate()">Yes!</button>
+    <button id="no" onmouseover="moveNo()">No</button>
+  `;
+}
+
+function celebrate(){
+  startMusicOnce(); // double-safe
+
+  document.getElementById("card").innerHTML = `
+    <h1>Yay! I am the luckiest person... 💖</h1>
+    <p>Now come get your gift... 🎁💋🤗</p>
+    <div style="font-size:32px;">🎁💖🤗💝💋❤️💕</div>
+  `;
+  setInterval(createHeart, 300);
+}
+
+function moveNo(){
+  const card = document.getElementById("card");
+  const no = document.getElementById("no");
+  no.style.left = Math.random()*(card.clientWidth-80)+"px";
+  no.style.top  = Math.random()*(card.clientHeight-40)+"px";
+}
+
+function createHeart(){
+  const h = document.createElement("div");
+  h.className = "heart";
+  const emojis = ["❤️","💖","💝","💗","💓","🧸","🐻"];
+  h.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+  h.style.left = Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),15000);
+}
+</script>
+
+</body>
+</html>
